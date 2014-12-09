@@ -19,11 +19,11 @@
 			source, this example data source is just for development and testing! -->
 		<!-- The datasource is deployed as WEB-INF/employee-api-ds.xml, you can 
 			find it in the source at src/main/webapp/WEB-INF/employee-api-ds.xml -->
-		<jta-data-source>java:jboss/datasources/employee-apiDS</jta-data-source>
+		<jta-data-source>java:/MySQLDS</jta-data-source>
 		<properties>
 			<!-- Properties for Hibernate -->
 			<property name="hibernate.hbm2ddl.auto" value="create" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 		</properties>
