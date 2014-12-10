@@ -201,6 +201,13 @@
         	<artifactId>mysql-connector-java</artifactId>
         	<version>5.1.34</version>
         </dependency>
+        <!-- Json Jackson dependencies -->
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate4</artifactId>
+            <version>2.4.3</version>
+        </dependency>
     </dependencies>
 
     <build>

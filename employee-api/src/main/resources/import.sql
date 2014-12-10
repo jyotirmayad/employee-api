@@ -16,4 +16,7 @@
 --
 
 -- You can use this file to load seed data into the database using SQL statements
-insert into Member (id, name, email, phone_number) values (0, 'John Smith', 'john.smith@mailinator.com', '2125551212') 
+insert into Member (id, name, email, phone_number) values (0, 'John Smith', 'john.smith@mailinator.com', '2125551212');
+INSERT INTO `employee_ds`.`EMPLOYEE` (`ID`, `ENTITY_CLASS`, `LAST_MODIFIED`, `DOB`, `DOJ`, `EMAIL`, `EMP_NO`, `FIRST_NAME`, `LAST_NAME`, `GENDER`, `PASSWORD`, `ROLE`, `STATUS`) VALUES ('100', 'test', '11212121212', '23232323', '23232323', 'jyoti@email.com', '121212', 'jyoti', 'dehury', 'male', 'mindfire', 'developer', 'active');
+
+
