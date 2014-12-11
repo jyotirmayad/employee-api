@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
+import javax.validation.constraints.NotNull;
 
 import com.employee.api.model.Employee;
 
@@ -40,6 +41,21 @@ public class EmployeeController extends BaseController<Employee> {
 	
 	/**
 	 *
+	 * @param entity
+	 * @return
+	 */
+	@Override
+	public Employee create(
+			@NotNull(message = ENTITY_VALIDATION) Employee entity)
+					throws ConstraintViolationException {
+
+		// Resolve dependencies
+		
+		return super.create(entity);
+	}
+	
+	/**
+	 *
 	 * @param String
 	 * @param String
 	 * @return
@@ -63,6 +79,7 @@ public class EmployeeController extends BaseController<Employee> {
 				cb.equal(entity.get("password"), password)));
 
 		Employee user = entityManager.createQuery(q).getSingleResult();
+		user.getSkills().size();
 
 		return user;
 	}

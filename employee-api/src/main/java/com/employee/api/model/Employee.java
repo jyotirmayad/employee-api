@@ -1,10 +1,23 @@
 package com.employee.api.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.employee.api.util.JSonViews;
+import com.employee.api.util.NullCollectionSerializer;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  *
@@ -33,7 +46,7 @@ public class Employee extends Resource {
 	@Size(min = 3)
 	@Column(name = "FIRST_NAME")
 	private String first_name = "";
-	
+
 	@NotNull
 	@Size(min = 3)
 	@Column(name = "LAST_NAME")
@@ -67,12 +80,21 @@ public class Employee extends Resource {
 	@Size(min = 3)
 	@Column(name = "PASSWORD")
 	private String password = "";
-	
+
+	@JsonView(JSonViews.EntityView.class)
+	@JsonSerialize(using = NullCollectionSerializer.class)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "EMPLOYEE_SKILL", joinColumns = { 
+			@JoinColumn(name = "EMPLOYEE_ID", nullable = true, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "SKILL_ID", 
+			nullable = true, updatable = false) })
+	private List<Skill> skills = new ArrayList<Skill>();
+
 	/**
 	 *
 	 */
 	public Employee() {}
-	
+
 	/**
 	 *
 	 */
@@ -162,12 +184,16 @@ public class Employee extends Resource {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<Skill> skills) {
+		this.skills = skills;
 	}
 
 }
