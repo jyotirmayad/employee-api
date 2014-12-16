@@ -14,6 +14,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.employee.api.util.JSonViews;
 import com.employee.api.util.NullCollectionSerializer;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -24,6 +27,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @author 
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "EMPLOYEE")
 public class Employee extends Resource {
 
