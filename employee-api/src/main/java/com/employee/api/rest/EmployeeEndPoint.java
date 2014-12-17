@@ -28,7 +28,6 @@ import javax.ws.rs.core.UriBuilderException;
 
 import com.employee.api.controller.EmployeeController;
 import com.employee.api.model.Employee;
-import com.employee.api.model.Skill;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**

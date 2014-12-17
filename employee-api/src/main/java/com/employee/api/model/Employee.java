@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -94,6 +95,11 @@ public class Employee extends Resource {
 			inverseJoinColumns = { @JoinColumn(name = "SKILL_ID", 
 			nullable = true, updatable = false) })
 	private List<Skill> skills = new ArrayList<Skill>();
+	
+	@JsonView(JSonViews.EntityView.class)
+    @JsonSerialize(using = NullCollectionSerializer.class)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Goal> goals = new ArrayList<Goal>();
 
 	/**
 	 *
@@ -199,6 +205,14 @@ public class Employee extends Resource {
 
 	public void setSkills(List<Skill> skills) {
 		this.skills = skills;
+	}
+
+	public List<Goal> getGoals() {
+		return goals;
+	}
+
+	public void setGoals(List<Goal> goals) {
+		this.goals = goals;
 	}
 
 }

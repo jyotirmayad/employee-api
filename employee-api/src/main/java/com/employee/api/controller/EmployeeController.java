@@ -56,6 +56,7 @@ public class EmployeeController extends BaseController<Employee> {
 
 		// Lazy load of skills
 		user.getSkills().size();
+		user.getGoals().size();
 		return user;
 	}
 
