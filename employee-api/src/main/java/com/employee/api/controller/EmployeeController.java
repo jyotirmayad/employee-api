@@ -1,5 +1,8 @@
 package com.employee.api.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -41,7 +44,7 @@ public class EmployeeController extends BaseController<Employee> {
 	 */
 	@Inject
 	protected Validator validator;
-	
+
 	/**
 	 *
 	 * @param id
@@ -60,7 +63,7 @@ public class EmployeeController extends BaseController<Employee> {
 		return user;
 	}
 
-	
+
 	/**
 	 *
 	 * @param entity
@@ -70,8 +73,10 @@ public class EmployeeController extends BaseController<Employee> {
 	public Employee create(
 			@NotNull(message = ENTITY_VALIDATION) Employee entity)
 					throws ConstraintViolationException {
-
-		return super.create(entity);
+		entity.setEmp_no(null);
+		entity = super.create(entity);
+		entity.setEmp_no(this.calculateEmpNo(entity.getId()));
+		return this.update(entity);
 	}
 
 	/**
@@ -90,7 +95,7 @@ public class EmployeeController extends BaseController<Employee> {
 		entity.setPassword(password);
 		return super.update(entity);
 	}
-	
+
 	/**
 	 *
 	 * @param String
@@ -105,7 +110,7 @@ public class EmployeeController extends BaseController<Employee> {
 		CriteriaQuery<Employee> q = cb.createQuery(Employee.class);
 
 		Root<Employee> entity = q.from(Employee.class);
-		
+
 		q.select(cb.construct(Employee.class,
 				entity.get("id"),
 				entity.get("emp_no"),
@@ -116,11 +121,14 @@ public class EmployeeController extends BaseController<Employee> {
 				cb.equal(entity.get("password"), password)));
 
 		Employee user = entityManager.createQuery(q).getSingleResult();
+
+		// Lazy load of skills
 		user.getSkills().size();
+		user.getGoals().size();
 
 		return user;
 	}
-	
+
 	/**
 	 *
 	 * @param startPage
@@ -148,6 +156,18 @@ public class EmployeeController extends BaseController<Employee> {
 				.setFirstResult(startPage * pageSize)
 				.setMaxResults(pageSize)
 				.getResultList();
+
+	}
+
+	/**
+	 *
+	 * @param Long
+	 * @return String
+	 */
+	private String calculateEmpNo(Long id) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMM");
+		Date date = new Date();
+		return dateFormat.format(date) + "-" + id;
 
 	}
 }

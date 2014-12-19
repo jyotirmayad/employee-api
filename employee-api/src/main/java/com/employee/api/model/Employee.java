@@ -38,10 +38,9 @@ public class Employee extends Resource {
 	 */
 	private static final long serialVersionUID = 1106280434818908095L;
 
-	@NotNull
-	@Size(min = 3)
+	
 	@Column(name = "EMP_NO", unique = true)
-	private String emp_no = "";
+	private String emp_no = null;
 
 	@NotNull
 	@Size(min = 3)
