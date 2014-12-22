@@ -21,6 +21,7 @@ import javax.validation.constraints.NotNull;
 
 import com.employee.api.model.Employee;
 
+
 @Stateless
 public class EmployeeController extends BaseController<Employee> {
 	public EmployeeController() {
@@ -59,7 +60,7 @@ public class EmployeeController extends BaseController<Employee> {
 
 		// Lazy load of skills
 		user.getSkills().size();
-		user.getGoals().size();
+		//user.getGoals().size();
 		return user;
 	}
 
@@ -169,5 +170,22 @@ public class EmployeeController extends BaseController<Employee> {
 		Date date = new Date();
 		return dateFormat.format(date) + "-" + id;
 
+	}
+
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
+	public Employee findEmployeeGoals(@Min(value = 1, message = ID_NOT_NULL_VALIDATION) long id)
+			throws ConstraintViolationException, NoResultException {
+
+
+		Employee user = super.find(id);
+
+		// Lazy load of skills
+		//user.getSkills().size();
+		user.getGoals().size();
+		return user;
 	}
 }

@@ -20,6 +20,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import com.employee.api.util.JSonViews;
 import com.employee.api.util.NullCollectionSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -38,7 +39,7 @@ public class Employee extends Resource {
 	 */
 	private static final long serialVersionUID = 1106280434818908095L;
 
-	
+	@JsonIgnore
 	@Column(name = "EMP_NO", unique = true)
 	private String emp_no = null;
 
@@ -95,7 +96,7 @@ public class Employee extends Resource {
 			nullable = true, updatable = false) })
 	private List<Skill> skills = new ArrayList<Skill>();
 	
-	@JsonView(JSonViews.EntityView.class)
+	@JsonIgnore
     @JsonSerialize(using = NullCollectionSerializer.class)
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Goal> goals = new ArrayList<Goal>();

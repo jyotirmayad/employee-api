@@ -31,10 +31,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  */
 @RequestScoped
 @Path("employee/{employee:[0-9]*}/goal")
-public class GoalEndPoint extends BaseEndpoint<Employee> {
+public class GoalEndPoint extends BaseEndpoint<Goal> {
+	@EJB
+	private GoalController goalController;
+	
 	@EJB
 	private EmployeeController employeeController;
-	private GoalController goalController;
 
 	public GoalEndPoint() {
 		this.type = GoalEndPoint.class;
@@ -56,7 +58,7 @@ public class GoalEndPoint extends BaseEndpoint<Employee> {
 			@DefaultValue("10") @QueryParam("max") Integer maxResult)
 					throws IOException {
 
-		Employee entity = employeeController.find(id);
+		Employee entity = employeeController.findEmployeeGoals(id);
 
 		return createOkResponse(
 				entity.getGoals()).build();
@@ -77,10 +79,9 @@ public class GoalEndPoint extends BaseEndpoint<Employee> {
 			@Min(value = 1, message = "") @PathParam("employee") long id,
 			@NotNull(message = ENTITY_VALIDATION) Goal entity)
 					throws IllegalArgumentException, UriBuilderException, JsonProcessingException {
-
+		System.out.println(id);
 		Employee employee = employeeController.find(id);
 		entity.setEmployee(employee);
-		employee.getGoals().add(entity);
-		return createCreatedResponse(employeeController.update(employee)).build();
+		return createCreatedResponse(goalController.create(entity)).build();
 	}
 }

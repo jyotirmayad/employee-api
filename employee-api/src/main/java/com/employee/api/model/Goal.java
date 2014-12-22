@@ -1,5 +1,7 @@
 package com.employee.api.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,6 +34,10 @@ public class Goal extends Resource {
 	@Column(name = "GOAL")
 	private String goal = "";
 	
+	@NotNull
+	@Column(name = "DATE")
+	private Date date;
+	
 	@JsonIgnore
 	@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -51,6 +57,14 @@ public class Goal extends Resource {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 }

@@ -72,9 +72,25 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 	public Response find(
 			@Min(value = 1, message = ID_VALIDATION) @PathParam(value = "id") long id)
 					throws JsonProcessingException, NoResultException {
-
-		return createOkResponse(
-				employeeController.find(id)).build();
+		// Create a hash map for response data
+		HashMap<String, Serializable> responseData = new HashMap<String, Serializable>();
+		
+		Employee employee = employeeController.find(id);
+		
+		responseData.put("status", employee.getStatus());
+		responseData.put("email", employee.getEmail());
+		responseData.put("id", employee.getId());
+		responseData.put("emp_no", employee.getEmp_no());
+		responseData.put("role", employee.getRole());
+		responseData.put("first_name", employee.getFirst_name());
+		responseData.put("last_name", employee.getLast_name());
+		responseData.put("middle_name", employee.getMiddle_name());
+		responseData.put("dob", employee.getDob());
+		responseData.put("gender", employee.getGender());
+//		responseData.put("skills", (Serializable) employee.getSkills());
+//		responseData.put("goals", (Serializable) employee.getGoals());
+		
+		return createOkResponse(responseData).build();
 	}
 
 	/**
@@ -95,8 +111,23 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 		// Create a hash map for response data
 		HashMap<String, Serializable> responseData = new HashMap<String, Serializable>();
 		try {
-			return createOkResponse(
-					employeeController.findEmployeeByUsernamePassword(userName, password)).build();
+			Employee employee = employeeController.findEmployeeByUsernamePassword(userName, password);
+			
+			responseData.put("status", employee.getStatus());
+			responseData.put("email", employee.getEmail());
+			responseData.put("id", employee.getId());
+			responseData.put("emp_no", employee.getEmp_no());
+			responseData.put("role", employee.getRole());
+			responseData.put("first_name", employee.getFirst_name());
+			responseData.put("last_name", employee.getLast_name());
+			responseData.put("middle_name", employee.getMiddle_name());
+			responseData.put("dob", employee.getDob());
+			responseData.put("gender", employee.getGender());
+			responseData.put("skills", (Serializable) employee.getSkills());
+			responseData.put("goals", (Serializable) employee.getGoals());
+			
+			return createOkResponse(responseData).build();
+
 		} catch (ConstraintViolationException e) {
 			responseData.put("message", "Invalid Username or Password");
 			return Response.status(Response.Status.UNAUTHORIZED).entity(responseData).type(MediaType.APPLICATION_JSON).build();
