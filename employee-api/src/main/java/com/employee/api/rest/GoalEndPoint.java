@@ -1,9 +1,12 @@
 package com.employee.api.rest;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.NoResultException;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -34,7 +37,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public class GoalEndPoint extends BaseEndpoint<Goal> {
 	@EJB
 	private GoalController goalController;
-	
+
 	@EJB
 	private EmployeeController employeeController;
 
@@ -62,6 +65,24 @@ public class GoalEndPoint extends BaseEndpoint<Goal> {
 
 		return createOkResponse(
 				entity.getGoals()).build();
+	}
+
+	/**
+	 *
+	 * @param id
+	 * @param date
+	 * @return goals
+	 * @throws JsonProcessingException
+	 */
+	@GET
+	@Path("/{date: [0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findByDate(
+			@Min(value = 1, message = "") @PathParam("employee") long id,
+			@PathParam("date") Date date)
+					throws JsonProcessingException, NoResultException {
+		List<Goal> goals = goalController.getGoalsByEmployeeDate(id, date);
+		return createOkResponse(goals).build();
 	}
 
 	/**
