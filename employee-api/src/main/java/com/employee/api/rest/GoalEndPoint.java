@@ -79,7 +79,7 @@ public class GoalEndPoint extends BaseEndpoint<Goal> {
 			@Min(value = 1, message = "") @PathParam("employee") long id,
 			@NotNull(message = ENTITY_VALIDATION) Goal entity)
 					throws IllegalArgumentException, UriBuilderException, JsonProcessingException {
-		System.out.println(id);
+
 		Employee employee = employeeController.find(id);
 		entity.setEmployee(employee);
 		return createCreatedResponse(goalController.create(entity)).build();

@@ -198,6 +198,10 @@ public class Employee extends Resource {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String passwordVal() {
+		return password;
+	}
 
 	public List<Skill> getSkills() {
 		return skills;

@@ -27,7 +27,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilderException;
 
 import com.employee.api.controller.EmployeeController;
+import com.employee.api.controller.GoalController;
 import com.employee.api.model.Employee;
+import com.employee.api.model.Goal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -41,6 +43,9 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 
 	@Inject
 	private EmployeeController employeeController;
+
+	@Inject
+	private GoalController goalController;
 
 	/**
 	 *
@@ -74,9 +79,10 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 					throws JsonProcessingException, NoResultException {
 		// Create a hash map for response data
 		HashMap<String, Serializable> responseData = new HashMap<String, Serializable>();
-		
+
 		Employee employee = employeeController.find(id);
-		
+		List<Goal> goals = goalController.getGoalsByEmployeeDate(id, new java.sql.Date(System.currentTimeMillis()));
+
 		responseData.put("status", employee.getStatus());
 		responseData.put("email", employee.getEmail());
 		responseData.put("id", employee.getId());
@@ -86,10 +92,11 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 		responseData.put("last_name", employee.getLast_name());
 		responseData.put("middle_name", employee.getMiddle_name());
 		responseData.put("dob", employee.getDob());
+		responseData.put("doj", employee.getDoj());
 		responseData.put("gender", employee.getGender());
-//		responseData.put("skills", (Serializable) employee.getSkills());
-//		responseData.put("goals", (Serializable) employee.getGoals());
-		
+		responseData.put("skills", (Serializable) employee.getSkills());
+		responseData.put("goals", (Serializable) goals);
+
 		return createOkResponse(responseData).build();
 	}
 
@@ -112,7 +119,8 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 		HashMap<String, Serializable> responseData = new HashMap<String, Serializable>();
 		try {
 			Employee employee = employeeController.findEmployeeByUsernamePassword(userName, password);
-			
+			List<Goal> goals = goalController.getGoalsByEmployeeDate(employee.getId(), new java.sql.Date(System.currentTimeMillis()));
+
 			responseData.put("status", employee.getStatus());
 			responseData.put("email", employee.getEmail());
 			responseData.put("id", employee.getId());
@@ -122,10 +130,11 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 			responseData.put("last_name", employee.getLast_name());
 			responseData.put("middle_name", employee.getMiddle_name());
 			responseData.put("dob", employee.getDob());
+			responseData.put("doj", employee.getDoj());
 			responseData.put("gender", employee.getGender());
 			responseData.put("skills", (Serializable) employee.getSkills());
-			responseData.put("goals", (Serializable) employee.getGoals());
-			
+			responseData.put("goals", (Serializable) goals);
+
 			return createOkResponse(responseData).build();
 
 		} catch (ConstraintViolationException e) {
@@ -154,7 +163,25 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 		// Create a hash map for response data
 		HashMap<String, Serializable> responseData = new HashMap<String, Serializable>();
 		try {
-			return createCreatedResponse(employeeController.create(entity)).build();
+
+			Employee employee = employeeController.create(entity);
+
+			responseData.put("status", employee.getStatus());
+			responseData.put("email", employee.getEmail());
+			responseData.put("id", employee.getId());
+			responseData.put("emp_no", employee.getEmp_no());
+			responseData.put("role", employee.getRole());
+			responseData.put("first_name", employee.getFirst_name());
+			responseData.put("last_name", employee.getLast_name());
+			responseData.put("middle_name", employee.getMiddle_name());
+			responseData.put("dob", employee.getDob());
+			responseData.put("doj", employee.getDoj());
+			responseData.put("gender", employee.getGender());
+			responseData.put("skills", (Serializable) employee.getSkills());
+			responseData.put("goals", (Serializable) employee.getGoals());
+
+			return Response.status(Response.Status.CREATED).entity(responseData).type(MediaType.APPLICATION_JSON).build();
+
 		} catch (ConstraintViolationException e) {
 			responseData.put("message", "Invalid Data");
 			return Response.status(Response.Status.CONFLICT).entity(responseData).type(MediaType.APPLICATION_JSON).build();

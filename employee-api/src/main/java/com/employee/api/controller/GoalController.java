@@ -1,6 +1,12 @@
 package com.employee.api.controller;
 
+
+import java.sql.Date;
+import java.util.List;
+
 import javax.ejb.Stateless;
+import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 
@@ -8,6 +14,7 @@ import com.employee.api.model.Goal;
 
 @Stateless
 public class GoalController  extends BaseController<Goal> {
+	
 	/**
 	 *
 	 * @param entity
@@ -19,5 +26,17 @@ public class GoalController  extends BaseController<Goal> {
 					throws ConstraintViolationException {
 
 		return super.create(entity);
+	}
+	
+	public List<Goal> getGoalsByEmployeeDate(Long id, Date date) {
+
+		TypedQuery<Goal> query = entityManager.createQuery(
+				"SELECT g FROM Goal AS g WHERE g.employee=" + id + " AND g.date=:date", Goal.class)
+				.setParameter("date", date, TemporalType.DATE);
+		List<Goal> goals = query.getResultList();
+
+		return goals;
+
+
 	}
 }

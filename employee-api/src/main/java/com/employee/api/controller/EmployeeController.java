@@ -90,10 +90,12 @@ public class EmployeeController extends BaseController<Employee> {
 			@NotNull(message = ENTITY_VALIDATION) Employee entity)
 					throws ConstraintViolationException, IllegalArgumentException {
 
-		TypedQuery<String> query = entityManager.createQuery(
-				"SELECT e.password FROM Employee AS e WHERE e.id=" + entity.getId(), String.class);
-		String password = query.getSingleResult();
-		entity.setPassword(password);
+		Employee employee = super.find(entity.getId());
+		employee.getGoals().size();
+		entity.setPassword(employee.passwordVal());
+		entity.setEmp_no(employee.getEmp_no());
+		entity.setGoals(employee.getGoals());
+		
 		return super.update(entity);
 	}
 
