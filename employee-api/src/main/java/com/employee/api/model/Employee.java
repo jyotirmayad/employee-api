@@ -100,6 +100,11 @@ public class Employee extends Resource {
     @JsonSerialize(using = NullCollectionSerializer.class)
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Goal> goals = new ArrayList<Goal>();
+	
+	@JsonIgnore
+    @JsonSerialize(using = NullCollectionSerializer.class)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Leave> leaves = new ArrayList<Leave>();
 
 	/**
 	 *
@@ -193,6 +198,10 @@ public class Employee extends Resource {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 
 	public void setPassword(String password) {

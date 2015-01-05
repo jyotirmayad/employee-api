@@ -36,7 +36,6 @@ public class Goal extends Resource {
 	@Column(name = "GOAL")
 	private String goal = "";
 	
-	@NotNull
 	@Column(name = "DATE")
 	private Date date;
 	

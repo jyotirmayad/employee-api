@@ -2,6 +2,7 @@ package com.employee.api.rest;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -100,7 +101,11 @@ public class GoalEndPoint extends BaseEndpoint<Goal> {
 			@Min(value = 1, message = "") @PathParam("employee") long id,
 			@NotNull(message = ENTITY_VALIDATION) Goal entity)
 					throws IllegalArgumentException, UriBuilderException, JsonProcessingException {
-
+		if(entity.getDate() == null) {
+			long time = System.currentTimeMillis();
+			java.sql.Date date = new java.sql.Date(time);
+			entity.setDate(date);
+		}
 		Employee employee = employeeController.find(id);
 		entity.setEmployee(employee);
 		return createCreatedResponse(goalController.create(entity)).build();
