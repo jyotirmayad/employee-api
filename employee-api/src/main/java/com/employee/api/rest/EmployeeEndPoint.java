@@ -24,7 +24,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import com.employee.api.controller.EmployeeController;
 import com.employee.api.controller.GoalController;
@@ -179,8 +181,22 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 			responseData.put("gender", employee.getGender());
 			responseData.put("skills", (Serializable) employee.getSkills());
 			responseData.put("goals", (Serializable) employee.getGoals());
+			
+			ResponseBuilder responseBuilder = Response.created(
+	                UriBuilder.fromPath("/")
+	                .path(String.valueOf(employee.getId())).build())
+	                .entity(responseData).type(MediaType.APPLICATION_JSON);
 
-			return Response.status(Response.Status.CREATED).entity(responseData).type(MediaType.APPLICATION_JSON).build();
+	        if (headers.getHeaderString("Origin") != null
+	                && !headers.getHeaderString("Origin").isEmpty()) {
+	            responseBuilder.header("Access-Control-Allow-Origin",
+	                    headers.getRequestHeader("Origin").get(0)).header(
+	                            "Access-Control-Allow-Credentials", "true");
+	        }
+
+	        return responseBuilder.build();
+
+			//return Response.status(Response.Status.CREATED).entity(responseData).type(MediaType.APPLICATION_JSON).build();
 
 		} catch (ConstraintViolationException e) {
 			responseData.put("message", "Invalid Data");

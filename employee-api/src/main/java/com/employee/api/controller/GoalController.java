@@ -10,10 +10,15 @@ import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 
+import com.employee.api.model.Employee;
 import com.employee.api.model.Goal;
 
 @Stateless
-public class GoalController  extends BaseController<Goal> {
+public class GoalController extends BaseController<Goal> {
+	
+	public GoalController() {
+		this.type = Goal.class;
+	}
 	
 	/**
 	 *
@@ -38,5 +43,20 @@ public class GoalController  extends BaseController<Goal> {
 		return goals;
 
 
+	}
+	
+	/**
+	 *
+	 * @param entity
+	 * @return
+	 */
+	@Override
+	public Goal update(
+			@NotNull(message = ENTITY_VALIDATION) Goal entity)
+					throws ConstraintViolationException, IllegalArgumentException {
+
+		Goal goal = super.find(entity.getId());
+		goal.setStatus(entity.getStatus());
+		return goal;
 	}
 }

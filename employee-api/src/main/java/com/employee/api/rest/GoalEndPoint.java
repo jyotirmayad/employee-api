@@ -14,6 +14,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -109,5 +110,24 @@ public class GoalEndPoint extends BaseEndpoint<Goal> {
 		Employee employee = employeeController.find(id);
 		entity.setEmployee(employee);
 		return createCreatedResponse(goalController.create(entity)).build();
+	}
+	
+	/**
+	 *
+	 * @param id
+	 * @param entity
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	@PUT
+	@Path("/{id:[0-9]*}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response update(
+			@Min(value = 1, message = ID_VALIDATION) @PathParam("id") long id,
+			@NotNull(message = ENTITY_VALIDATION) Goal entity)
+					throws JsonProcessingException {
+		entity.setId(id);
+		return createOkResponse(goalController.update(entity)).build();
 	}
 }

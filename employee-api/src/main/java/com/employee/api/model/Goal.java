@@ -39,6 +39,9 @@ public class Goal extends Resource {
 	@Column(name = "DATE")
 	private Date date;
 	
+	@Column(name = "STATUS")
+	private int status = 0;
+	
 	@JsonIgnore
 	@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -66,6 +69,14 @@ public class Goal extends Resource {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }
