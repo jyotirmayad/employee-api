@@ -10,7 +10,6 @@ import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 
-import com.employee.api.model.Employee;
 import com.employee.api.model.Goal;
 
 @Stateless

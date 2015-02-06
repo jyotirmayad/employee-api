@@ -105,6 +105,11 @@ public class Employee extends Resource {
     @JsonSerialize(using = NullCollectionSerializer.class)
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Leave> leaves = new ArrayList<Leave>();
+	
+	@JsonIgnore
+    @JsonSerialize(using = NullCollectionSerializer.class)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<EmployeeLeaveDate> employeeLeaveDates = new ArrayList<EmployeeLeaveDate>();
 
 	/**
 	 *
@@ -226,6 +231,14 @@ public class Employee extends Resource {
 
 	public void setGoals(List<Goal> goals) {
 		this.goals = goals;
+	}
+
+	public List<EmployeeLeaveDate> getEmployeeLeaveDates() {
+		return employeeLeaveDates;
+	}
+
+	public void setEmployeeLeaveDates(List<EmployeeLeaveDate> employeeLeaveDates) {
+		this.employeeLeaveDates = employeeLeaveDates;
 	}
 
 }

@@ -84,6 +84,7 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 
 		Employee employee = employeeController.find(id);
 		List<Goal> goals = goalController.getGoalsByEmployeeDate(id, new java.sql.Date(System.currentTimeMillis()));
+		int presentStatus = employeeController.getEmpPresentStatusForToday(id);
 
 		responseData.put("status", employee.getStatus());
 		responseData.put("email", employee.getEmail());
@@ -98,6 +99,7 @@ public class EmployeeEndPoint extends BaseEndpoint<Employee> {
 		responseData.put("gender", employee.getGender());
 		responseData.put("skills", (Serializable) employee.getSkills());
 		responseData.put("goals", (Serializable) goals);
+		responseData.put("presentStatus", presentStatus);
 
 		return createOkResponse(responseData).build();
 	}

@@ -222,6 +222,26 @@ public abstract class BaseEndpoint<T extends Entity> /* implements Endpoint<T> *
 
         return responseBuilder;
     }
+    
+    /**
+    *
+    * @param int Status
+    * @return @throws JsonProcessingException
+    */
+   protected Response.ResponseBuilder createResponse(int status)
+           throws JsonProcessingException {
+
+       ResponseBuilder responseBuilder = Response.status(status);
+
+       if (headers.getHeaderString("Origin") != null
+               && !headers.getHeaderString("Origin").isEmpty()) {
+           responseBuilder.header("Access-Control-Allow-Origin",
+                   headers.getRequestHeader("Origin").get(0)).header(
+                           "Access-Control-Allow-Credentials", "true");
+       }
+
+       return responseBuilder;
+   }
 
     /**
      *

@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,6 +21,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.employee.api.model.Employee;
+import com.employee.api.model.Goal;
+import com.employee.api.model.Leave;
 
 
 @Stateless
@@ -171,6 +174,44 @@ public class EmployeeController extends BaseController<Employee> {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMM");
 		Date date = new Date();
 		return dateFormat.format(date) + "-" + id;
+
+	}
+	
+	/**
+	 *
+	 * @param Long
+	 * @return integer
+	 */
+	public int getEmpPresentStatusForToday(Long id) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Date date = new Date();
+		String currentDate = dateFormat.format(date);
+		TypedQuery<Long> query = entityManager.createQuery(
+				"SELECT COUNT(id) FROM Leave AS el WHERE '" + currentDate +
+				"' BETWEEN el.fromDate AND el.toDate", Long.class);
+		
+		//RETURN 2 IF ON LEAVE, 1 IF PRESENT
+		if ( query.getSingleResult() > 0) {
+			return 2;
+		}
+		else {
+			return 1;
+		}
+	}
+	
+	/**
+	 *
+	 * @param Long
+	 * @return integer
+	 */
+	public Long checkForOverlapDateInLeaveRequest(Long id, String startDate, String endDate) {
+		
+		TypedQuery<Long> query = entityManager.createQuery(
+				"SELECT COUNT(id) FROM Leave AS el WHERE '" + startDate + "' <= el.toDate "
+						+ "AND '" + endDate + "' >= el.fromDate", Long.class);
+		
+		//RETURN 
+		return query.getSingleResult();
 
 	}
 
